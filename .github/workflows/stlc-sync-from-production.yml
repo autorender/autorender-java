@@ -12,9 +12,9 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    if: github.repository == 'autorenderhq/autorender-java-staging'
+    if: github.repository == 'autorender/autorender-java-staging'
     env:
-      PRODUCTION_REPO: autorenderhq/autorender-java
+      PRODUCTION_REPO: autorender/autorender-java
     steps:
       - name: Check out staging
         uses: actions/checkout@v4

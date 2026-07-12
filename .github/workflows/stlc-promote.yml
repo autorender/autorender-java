@@ -11,9 +11,9 @@ permissions:
 jobs:
   promote:
     runs-on: ubuntu-latest
-    if: github.repository == 'autorenderhq/autorender-java-staging'
+    if: github.repository == 'autorender/autorender-java-staging'
     env:
-      PRODUCTION_REPO: autorenderhq/autorender-java
+      PRODUCTION_REPO: autorender/autorender-java
       GH_TOKEN: ${{ secrets.PRODUCTION_REPO_TOKEN }}
     steps:
       - name: Check out staging
