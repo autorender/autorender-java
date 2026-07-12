@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.autorender/autorender-java)](https://central.sonatype.com/artifact/io.autorender/autorender-java/0.1.2)
-[![javadoc](https://javadoc.io/badge2/io.autorender/autorender-java/0.1.2/javadoc.svg)](https://javadoc.io/doc/io.autorender/autorender-java/0.0.1)
+[![Maven Central](https://img.shields.io/maven-central/v/io.autorender/autorender-java)](https://central.sonatype.com/artifact/io.autorender/autorender-java/0.1.3)
+[![javadoc](https://javadoc.io/badge2/io.autorender/autorender-java/0.1.3/javadoc.svg)](https://javadoc.io/doc/io.autorender/autorender-java/0.0.1)
 
 <!-- x-release-please-end -->
 
@@ -11,7 +11,7 @@ The Autorender Java SDK provides convenient access to the [Autorender REST API](
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [autorender.mintlify.app](https://autorender.mintlify.app/). Javadocs are available on [javadoc.io](https://javadoc.io/doc/io.autorender/autorender-java/0.1.2).
+The REST API documentation can be found on [autorender.mintlify.app](https://autorender.mintlify.app/). Javadocs are available on [javadoc.io](https://javadoc.io/doc/io.autorender/autorender-java/0.1.3).
 
 <!-- x-release-please-end -->
 
@@ -22,7 +22,7 @@ The REST API documentation can be found on [autorender.mintlify.app](https://aut
 ### Gradle
 
 ```kotlin
-implementation("io.autorender:autorender-java:0.1.2")
+implementation("io.autorender:autorender-java:0.1.3")
 ```
 
 ### Maven
@@ -31,7 +31,7 @@ implementation("io.autorender:autorender-java:0.1.2")
 <dependency>
   <groupId>io.autorender</groupId>
   <artifactId>autorender-java</artifactId>
-  <version>0.1.2</version>
+  <version>0.1.3</version>
 </dependency>
 ```
 
