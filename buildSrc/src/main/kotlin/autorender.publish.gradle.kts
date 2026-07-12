@@ -60,9 +60,9 @@ configure<MavenPublishBaseExtension> {
         }
 
         scm {
-            connection.set("scm:git:git://github.com/autorenderhq/autorender-java.git")
-            developerConnection.set("scm:git:git://github.com/autorenderhq/autorender-java.git")
-            url.set("https://github.com/autorenderhq/autorender-java")
+            connection.set("scm:git:git://github.com/autorender/autorender-java.git")
+            developerConnection.set("scm:git:git://github.com/autorender/autorender-java.git")
+            url.set("https://github.com/autorender/autorender-java")
         }
     }
 }
