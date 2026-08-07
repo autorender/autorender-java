@@ -77,11 +77,6 @@ internal class ServiceParamsTest {
 
         fileService.list(
             FileListParams.builder()
-                .folderNo("folder_no")
-                .limit(1L)
-                .page(1L)
-                .search("search")
-                .sort(FileListParams.Sort.NAME_ASC)
                 .putAdditionalHeader("Secret-Header", "42")
                 .putAdditionalQueryParam("secret_query_param", "42")
                 .build()

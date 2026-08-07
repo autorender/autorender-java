@@ -4,7 +4,6 @@ package io.autorender.services.async
 
 import io.autorender.TestServerExtension
 import io.autorender.client.okhttp.AutorenderOkHttpClientAsync
-import io.autorender.models.files.FileListParams
 import io.autorender.models.files.FileRenameParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -36,19 +35,10 @@ internal class FileServiceAsyncTest {
                 .build()
         val fileServiceAsync = client.files()
 
-        val filesFuture =
-            fileServiceAsync.list(
-                FileListParams.builder()
-                    .folderNo("folder_no")
-                    .limit(1L)
-                    .page(1L)
-                    .search("search")
-                    .sort(FileListParams.Sort.NAME_ASC)
-                    .build()
-            )
+        val pageFuture = fileServiceAsync.list()
 
-        val files = filesFuture.get()
-        files.validate()
+        val page = pageFuture.get()
+        page.response().validate()
     }
 
     @Test

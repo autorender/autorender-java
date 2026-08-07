@@ -44,7 +44,7 @@ configure<MavenPublishBaseExtension> {
     pom {
         name.set("AutoRender Public API")
         description.set("REST API for uploading, managing, and serving media assets. All endpoints\nrequire an API key via the x-api-key header or Authorization: Bearer <key>.")
-        url.set("https://autorender.mintlify.app/")
+        url.set("https://autorender.io/docs")
 
         licenses {
             license {

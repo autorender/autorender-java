@@ -18,8 +18,9 @@ import io.autorender.core.http.json
 import io.autorender.core.http.parseable
 import io.autorender.core.prepareAsync
 import io.autorender.models.files.FileDeleteParams
+import io.autorender.models.files.FileListPageAsync
+import io.autorender.models.files.FileListPageResponse
 import io.autorender.models.files.FileListParams
-import io.autorender.models.files.FileListResponse
 import io.autorender.models.files.FileRenameParams
 import io.autorender.models.files.FileRenameResponse
 import io.autorender.models.files.FileRetrieveParams
@@ -51,7 +52,7 @@ class FileServiceAsyncImpl internal constructor(private val clientOptions: Clien
     override fun list(
         params: FileListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<FileListResponse> =
+    ): CompletableFuture<FileListPageAsync> =
         // get /api/v1/files
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
@@ -115,13 +116,13 @@ class FileServiceAsyncImpl internal constructor(private val clientOptions: Clien
                 }
         }
 
-        private val listHandler: Handler<FileListResponse> =
-            jsonHandler<FileListResponse>(clientOptions.jsonMapper)
+        private val listHandler: Handler<FileListPageResponse> =
+            jsonHandler<FileListPageResponse>(clientOptions.jsonMapper)
 
         override fun list(
             params: FileListParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<FileListResponse>> {
+        ): CompletableFuture<HttpResponseFor<FileListPageAsync>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -140,6 +141,14 @@ class FileServiceAsyncImpl internal constructor(private val clientOptions: Clien
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
                                 }
+                            }
+                            .let {
+                                FileListPageAsync.builder()
+                                    .service(FileServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }
