@@ -2,16 +2,16 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.autorender/autorender-java)](https://central.sonatype.com/artifact/io.autorender/autorender-java/0.0.1)
-[![javadoc](https://javadoc.io/badge2/io.autorender/autorender-java/0.0.1/javadoc.svg)](https://javadoc.io/doc/io.autorender/autorender-java/0.0.1)
+[![Maven Central](https://img.shields.io/maven-central/v/io.autorender/autorender-java)](https://central.sonatype.com/artifact/io.autorender/autorender-java/0.1.2)
+[![javadoc](https://javadoc.io/badge2/io.autorender/autorender-java/0.1.2/javadoc.svg)](https://javadoc.io/doc/io.autorender/autorender-java/0.0.1)
 
 <!-- x-release-please-end -->
 
-The Autorender Java SDK provides convenient access to the [Autorender REST API](https://autorender.io/docs) from applications written in Java.
+The Autorender Java SDK provides convenient access to the [Autorender REST API](https://autorender.mintlify.app/) from applications written in Java.
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [autorender.io](https://autorender.io/docs). Javadocs are available on [javadoc.io](https://javadoc.io/doc/io.autorender/autorender-java/0.0.1).
+The REST API documentation can be found on [autorender.mintlify.app](https://autorender.mintlify.app/). Javadocs are available on [javadoc.io](https://javadoc.io/doc/io.autorender/autorender-java/0.1.2).
 
 <!-- x-release-please-end -->
 
@@ -22,7 +22,7 @@ The REST API documentation can be found on [autorender.io](https://autorender.io
 ### Gradle
 
 ```kotlin
-implementation("io.autorender:autorender-java:0.0.1")
+implementation("io.autorender:autorender-java:0.1.2")
 ```
 
 ### Maven
@@ -31,7 +31,7 @@ implementation("io.autorender:autorender-java:0.0.1")
 <dependency>
   <groupId>io.autorender</groupId>
   <artifactId>autorender-java</artifactId>
-  <version>0.0.1</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 
@@ -46,8 +46,8 @@ This library requires Java 8 or later.
 ```java
 import io.autorender.client.AutorenderClient;
 import io.autorender.client.okhttp.AutorenderOkHttpClient;
-import io.autorender.models.files.FileListPage;
 import io.autorender.models.files.FileListParams;
+import io.autorender.models.files.FileListResponse;
 
 // Configures using the `autorender.apiKey` and `autorender.baseUrl` system properties
 // Or configures using the `AUTORENDER_API_KEY` and `AUTORENDER_BASE_URL` environment variables
@@ -56,7 +56,7 @@ AutorenderClient client = AutorenderOkHttpClient.fromEnv();
 FileListParams params = FileListParams.builder()
     .limit(10L)
     .build();
-FileListPage page = client.files().list(params);
+FileListResponse files = client.files().list(params);
 ```
 
 ## Client configuration
@@ -129,7 +129,7 @@ The `withOptions()` method does not affect the original client or service.
 
 To send a request to the Autorender API, build an instance of some `Params` class and pass it to the corresponding client method. When the response is received, it will be deserialized into an instance of a Java class.
 
-For example, `client.files().list(...)` should be called with an instance of `FileListParams`, and it will return an instance of `FileListPage`.
+For example, `client.files().list(...)` should be called with an instance of `FileListParams`, and it will return an instance of `FileListResponse`.
 
 ## Immutability
 
@@ -146,8 +146,8 @@ The default client is synchronous. To switch to asynchronous execution, call the
 ```java
 import io.autorender.client.AutorenderClient;
 import io.autorender.client.okhttp.AutorenderOkHttpClient;
-import io.autorender.models.files.FileListPageAsync;
 import io.autorender.models.files.FileListParams;
+import io.autorender.models.files.FileListResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `autorender.apiKey` and `autorender.baseUrl` system properties
@@ -157,7 +157,7 @@ AutorenderClient client = AutorenderOkHttpClient.fromEnv();
 FileListParams params = FileListParams.builder()
     .limit(10L)
     .build();
-CompletableFuture<FileListPageAsync> page = client.async().files().list(params);
+CompletableFuture<FileListResponse> files = client.async().files().list(params);
 ```
 
 Or create an asynchronous client from the beginning:
@@ -165,8 +165,8 @@ Or create an asynchronous client from the beginning:
 ```java
 import io.autorender.client.AutorenderClientAsync;
 import io.autorender.client.okhttp.AutorenderOkHttpClientAsync;
-import io.autorender.models.files.FileListPageAsync;
 import io.autorender.models.files.FileListParams;
+import io.autorender.models.files.FileListResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `autorender.apiKey` and `autorender.baseUrl` system properties
@@ -176,7 +176,7 @@ AutorenderClientAsync client = AutorenderOkHttpClientAsync.fromEnv();
 FileListParams params = FileListParams.builder()
     .limit(10L)
     .build();
-CompletableFuture<FileListPageAsync> page = client.files().list(params);
+CompletableFuture<FileListResponse> files = client.files().list(params);
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
@@ -300,106 +300,6 @@ The SDK throws custom unchecked exception types:
 - [`AutorenderInvalidDataException`](autorender-java-core/src/main/kotlin/io/autorender/errors/AutorenderInvalidDataException.kt): Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
 - [`AutorenderException`](autorender-java-core/src/main/kotlin/io/autorender/errors/AutorenderException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
-
-## Pagination
-
-The SDK defines methods that return a paginated lists of results. It provides convenient ways to access the results either one page at a time or item-by-item across all pages.
-
-### Auto-pagination
-
-To iterate through all results across all pages, use the `autoPager()` method, which automatically fetches more pages as needed.
-
-When using the synchronous client, the method returns an [`Iterable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html)
-
-```java
-import io.autorender.models.files.FileListPage;
-import io.autorender.models.files.FileListResponse;
-
-FileListPage page = client.files().list();
-
-// Process as an Iterable
-for (FileListResponse file : page.autoPager()) {
-    System.out.println(file);
-}
-
-// Process as a Stream
-page.autoPager()
-    .stream()
-    .limit(50)
-    .forEach(file -> System.out.println(file));
-```
-
-When using the asynchronous client, the method returns an [`AsyncStreamResponse`](autorender-java-core/src/main/kotlin/io/autorender/core/http/AsyncStreamResponse.kt):
-
-```java
-import io.autorender.core.http.AsyncStreamResponse;
-import io.autorender.models.files.FileListPageAsync;
-import io.autorender.models.files.FileListResponse;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-
-CompletableFuture<FileListPageAsync> pageFuture = client.async().files().list();
-
-pageFuture.thenRun(page -> page.autoPager().subscribe(file -> {
-    System.out.println(file);
-}));
-
-// If you need to handle errors or completion of the stream
-pageFuture.thenRun(page -> page.autoPager().subscribe(new AsyncStreamResponse.Handler<>() {
-    @Override
-    public void onNext(FileListResponse file) {
-        System.out.println(file);
-    }
-
-    @Override
-    public void onComplete(Optional<Throwable> error) {
-        if (error.isPresent()) {
-            System.out.println("Something went wrong!");
-            throw new RuntimeException(error.get());
-        } else {
-            System.out.println("No more!");
-        }
-    }
-}));
-
-// Or use futures
-pageFuture.thenRun(page -> page.autoPager()
-    .subscribe(file -> {
-        System.out.println(file);
-    })
-    .onCompleteFuture()
-    .whenComplete((unused, error) -> {
-        if (error != null) {
-            System.out.println("Something went wrong!");
-            throw new RuntimeException(error);
-        } else {
-            System.out.println("No more!");
-        }
-    }));
-```
-
-### Manual pagination
-
-To access individual page items and manually request the next page, use the `items()`,
-`hasNextPage()`, and `nextPage()` methods:
-
-```java
-import io.autorender.models.files.FileListPage;
-import io.autorender.models.files.FileListResponse;
-
-FileListPage page = client.files().list();
-while (true) {
-    for (FileListResponse file : page.items()) {
-        System.out.println(file);
-    }
-
-    if (!page.hasNextPage()) {
-        break;
-    }
-
-    page = page.nextPage();
-}
-```
 
 ## Logging
 
@@ -706,7 +606,7 @@ To access undocumented response properties, call the `_additionalProperties()` m
 import io.autorender.core.JsonValue;
 import java.util.Map;
 
-Map<String, JsonValue> additionalProperties = client.uploads().create(params)._additionalProperties();
+Map<String, JsonValue> additionalProperties = client.files().list(params)._additionalProperties();
 JsonValue secretPropertyValue = additionalProperties.get("secretProperty");
 
 String result = secretPropertyValue.accept(new JsonValue.Visitor<>() {
@@ -734,22 +634,21 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 
 ```java
 import io.autorender.core.JsonField;
-import java.io.InputStream;
 import java.util.Optional;
 
-JsonField<InputStream> file = client.uploads().create(params)._file();
+JsonField<Object> field = client.files().list(params)._field();
 
-if (file.isMissing()) {
+if (field.isMissing()) {
   // The property is absent from the JSON response
-} else if (file.isNull()) {
+} else if (field.isNull()) {
   // The property was set to literal null
 } else {
   // Check if value was provided as a string
   // Other methods include `asNumber()`, `asBoolean()`, etc.
-  Optional<String> jsonString = file.asString();
+  Optional<String> jsonString = field.asString();
 
   // Try to deserialize into a custom type
-  MyClass myObject = file.asUnknown().orElseThrow().convert(MyClass.class);
+  MyClass myObject = field.asUnknown().orElseThrow().convert(MyClass.class);
 }
 ```
 
@@ -764,17 +663,17 @@ Validating the response is _not_ forwards compatible with new types from the API
 If you would still prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
 ```java
-import io.autorender.models.uploads.UploadCreateResponse;
+import io.autorender.models.files.FileListResponse;
 
-UploadCreateResponse upload = client.uploads().create(params).validate();
+FileListResponse files = client.files().list(params).validate();
 ```
 
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```java
-import io.autorender.models.files.FileListPage;
+import io.autorender.models.files.FileListResponse;
 
-FileListPage page = client.files().list(RequestOptions.builder().responseValidation(true).build());
+FileListResponse files = client.files().list(RequestOptions.builder().responseValidation(true).build());
 ```
 
 Or configure the default for all method calls at the client level:
