@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/autorender/autorender-java/compare/v0.1.2...v0.1.3) (2026-07-12)
+
+
+### Chores
+
+* rename autorenderhq -&gt; autorender references (GitHub org rename) ([#11](https://github.com/autorender/autorender-java/issues/11)) ([4229441](https://github.com/autorender/autorender-java/commit/422944160f0fa85cb29a61b459071428af544a12))
+
 ## [0.1.2](https://github.com/autorender/autorender-java/compare/v0.1.1...v0.1.2) (2026-06-29)
 
 
