@@ -4,7 +4,6 @@ package io.autorender.services.blocking
 
 import io.autorender.TestServerExtension
 import io.autorender.client.okhttp.AutorenderOkHttpClient
-import io.autorender.models.files.FileListParams
 import io.autorender.models.files.FileRenameParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -35,18 +34,9 @@ internal class FileServiceTest {
                 .build()
         val fileService = client.files()
 
-        val files =
-            fileService.list(
-                FileListParams.builder()
-                    .folderNo("folder_no")
-                    .limit(1L)
-                    .page(1L)
-                    .search("search")
-                    .sort(FileListParams.Sort.NAME_ASC)
-                    .build()
-            )
+        val page = fileService.list()
 
-        files.validate()
+        page.response().validate()
     }
 
     @Test

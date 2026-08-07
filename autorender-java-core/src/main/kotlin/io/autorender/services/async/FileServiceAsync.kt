@@ -7,8 +7,8 @@ import io.autorender.core.RequestOptions
 import io.autorender.core.http.HttpResponse
 import io.autorender.core.http.HttpResponseFor
 import io.autorender.models.files.FileDeleteParams
+import io.autorender.models.files.FileListPageAsync
 import io.autorender.models.files.FileListParams
-import io.autorender.models.files.FileListResponse
 import io.autorender.models.files.FileRenameParams
 import io.autorender.models.files.FileRenameResponse
 import io.autorender.models.files.FileRetrieveParams
@@ -67,20 +67,20 @@ interface FileServiceAsync {
         retrieve(fileNo, FileRetrieveParams.none(), requestOptions)
 
     /** List/search files with pagination, filtering, and sorting. */
-    fun list(): CompletableFuture<FileListResponse> = list(FileListParams.none())
+    fun list(): CompletableFuture<FileListPageAsync> = list(FileListParams.none())
 
     /** @see list */
     fun list(
         params: FileListParams = FileListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<FileListResponse>
+    ): CompletableFuture<FileListPageAsync>
 
     /** @see list */
-    fun list(params: FileListParams = FileListParams.none()): CompletableFuture<FileListResponse> =
+    fun list(params: FileListParams = FileListParams.none()): CompletableFuture<FileListPageAsync> =
         list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): CompletableFuture<FileListResponse> =
+    fun list(requestOptions: RequestOptions): CompletableFuture<FileListPageAsync> =
         list(FileListParams.none(), requestOptions)
 
     /** Delete file */
@@ -190,25 +190,25 @@ interface FileServiceAsync {
          * Returns a raw HTTP response for `get /api/v1/files`, but is otherwise the same as
          * [FileServiceAsync.list].
          */
-        fun list(): CompletableFuture<HttpResponseFor<FileListResponse>> =
+        fun list(): CompletableFuture<HttpResponseFor<FileListPageAsync>> =
             list(FileListParams.none())
 
         /** @see list */
         fun list(
             params: FileListParams = FileListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<FileListResponse>>
+        ): CompletableFuture<HttpResponseFor<FileListPageAsync>>
 
         /** @see list */
         fun list(
             params: FileListParams = FileListParams.none()
-        ): CompletableFuture<HttpResponseFor<FileListResponse>> =
+        ): CompletableFuture<HttpResponseFor<FileListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
             requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<FileListResponse>> =
+        ): CompletableFuture<HttpResponseFor<FileListPageAsync>> =
             list(FileListParams.none(), requestOptions)
 
         /**
